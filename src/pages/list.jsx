@@ -1,14 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
-import styles from './page.module.css';
+import styles from "./page.module.css";
 
-import { CountryList } from '../components/country-list';
-import { SortingControl } from '../components/sorting-control';
-import { deserializeQuery, loadCountries, loadLaureates, serializeQuery } from '../services/api';
+import { CountryList } from "../components/country-list";
+import { SortingControl } from "../components/sorting-control";
+import {
+  deserializeQuery,
+  loadCountries,
+  loadLaureates,
+  serializeQuery,
+} from "../services/api";
 
-export const ASC = 'asc';
-export const DESC = 'desc';
+export const ASC = "asc";
+export const DESC = "desc";
 
 const sortCb = (personCountSorting) => {
   if (personCountSorting === ASC) {
@@ -23,14 +28,14 @@ const aggregateData = (acc, person) => {
     ...acc,
     [person.bornCountryCode]: acc[person.bornCountryCode]
       ? [...acc[person.bornCountryCode], person]
-      : [person]
+      : [person],
   };
 };
 
 export const ListPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [personCountSorting, setPersonCountSorting] = useState('');
+  const [personCountSorting, setPersonCountSorting] = useState("");
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -46,7 +51,7 @@ export const ListPage = () => {
         .map(({ code, name }) => ({
           code,
           name,
-          count: (hashLaureates[code] && hashLaureates[code].length) || 0
+          count: (hashLaureates[code] && hashLaureates[code].length) || 0,
         }))
         .sort(sortCb(personCountSorting));
       setData(normalizedData);
@@ -56,34 +61,31 @@ export const ListPage = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get('count')) {
-      setPersonCountSorting(searchParams.get('count'));
+    if (searchParams.get("count")) {
+      setPersonCountSorting(searchParams.get("count"));
     }
     // eslint-disable-next-line
   }, [searchParams]);
 
-  useEffect(
-    () => {
-      loadCountryInfo();
-    },
-    [personCountSorting]
-  );
+  useEffect(() => {
+    loadCountryInfo();
+    console.log(searchParams)
+  }, [personCountSorting]);
 
   const content = loading ? (
-    'loading'
+    "loading"
   ) : data && data.length ? (
     <CountryList countries={data} />
   ) : null;
 
   const sortCountries = useCallback(
-    type => {
+    (type) => {
       const nextSortingValue = personCountSorting
         ? personCountSorting === ASC
           ? DESC
           : ASC
         : ASC;
-
-      setSearchParams({[type]:  ''});
+      setSearchParams({ [type]: nextSortingValue });
     },
     [personCountSorting]
   );
@@ -96,9 +98,9 @@ export const ListPage = () => {
       <div className={styles.filters}>
         <div className={styles.filter_item}>
           <SortingControl
-            label={'Number of Nobel laureates'}
+            label={"Number of Nobel laureates"}
             value={personCountSorting}
-            onSort={() => sortCountries('count')}
+            onSort={() => sortCountries("count")}
           />
         </div>
       </div>
