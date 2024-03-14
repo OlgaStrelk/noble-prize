@@ -8,9 +8,10 @@ import { Button } from '../components/button';
 export function HomePage() {
   const navigate = useNavigate();
 
-  const onClick = () => {
+  const onClick = (event) => {
     const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }];
     navigate('/list', { state: initialBreadcrumb });
+    event.preventDefault();
   };
 
   return (

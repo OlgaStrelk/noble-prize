@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useSearchParams, useLocation } from 'react-router-dom';
+import { useParams, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import styles from './page.module.css';
 import LaureateList from '../components/laureate-list';
 import Dropdown from '../components/dropdown';
@@ -20,15 +20,17 @@ export const CountryPage = () => {
   const { country } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') || '';
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
+  const url = window.location.href;
+  const navigate = useNavigate();
 
   useEffect(
     () => {
-      if (countryTitle) {
-
+      if (countryTitle && state && !isContainRoute(state, url)) {
+        navigate('', { state: [...state, { path: pathname, url, title: countryTitle }], replace: true });
       }
     },
-    [countryTitle, state]
+    [countryTitle, pathname, url, state]
   );
 
   const loadFilters = filteredLaureates => {
@@ -140,6 +142,7 @@ export const CountryPage = () => {
   return (
     <div className={styles.vertical_padding}>
       <header className={styles.horizontal_padding}>
+        <Breadcrumbs />
         <h1>{countryTitle}</h1>
       </header>
       <div className={styles.filters}>

@@ -7,7 +7,7 @@ import { removeRemainingCrumbs } from '../../services/breadcrumbs';
 
 const Crumb = ({ url, title, path }) => {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
 
   const routeTo = event => {
     event.preventDefault();
@@ -16,10 +16,16 @@ const Crumb = ({ url, title, path }) => {
 
   return (
     <span className={styles.item}>
-      <a href={url} onClick={routeTo}>
-        {title}
-      </a>
-      {` > `}
+      {path === pathname ? (
+        title
+      ) : (
+        <>
+          <a href={url} onClick={routeTo}>
+            {title}
+          </a>
+          {` > `}
+        </>
+      )}
     </span>
   );
 };
