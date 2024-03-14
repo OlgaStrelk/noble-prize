@@ -1,23 +1,29 @@
-import * as React from 'react';
+import * as React from "react";
+import { Link } from "react-router-dom";
 
-import styles from './laureate-list.module.css';
+import styles from "./laureate-list.module.css";
 
-import Avatar from '../avatar';
-import { Prizes } from './prizes';
+import Avatar from "../avatar";
+import { Prizes } from "./prizes";
 
 const LaureateList = ({ laureates }) => {
-
   return laureates.length > 0 ? (
     <ul>
       {laureates.map(({ id, firstname, surname, prizes }) => (
         <li key={id}>
-          <Avatar firstname={firstname} surname={surname} className={styles.avatar} />
-          <div>
-            <h3>
-              {firstname} {surname}
-            </h3>
-            <Prizes prizes={prizes} />
-          </div>
+          <Link className={styles.link} to={{pathname: id}}>
+            <Avatar
+              firstname={firstname}
+              surname={surname}
+              className={styles.avatar}
+            />
+            <div>
+              <h3>
+                {firstname} {surname}
+              </h3>
+              <Prizes prizes={prizes} />
+            </div>
+          </Link>
         </li>
       ))}
     </ul>
