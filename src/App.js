@@ -9,7 +9,6 @@ export default function App() {
         <Route path="/list" element={<ListPage />} />
         <Route path="/list/:country" element={<CountryPage />} />
         <Route path="/list/:country/:personId" element={<PersonPage />} />
-
       </Routes>
     </BrowserRouter>
   );
