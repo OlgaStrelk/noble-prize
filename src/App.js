@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HomePage, ListPage, CountryPage } from "./pages";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HomePage, ListPage, CountryPage } from './pages';
 
 export default function App() {
   return (

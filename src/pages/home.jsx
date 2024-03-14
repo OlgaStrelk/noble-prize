@@ -8,9 +8,8 @@ import { Button } from '../components/button';
 export function HomePage() {
   const navigate = useNavigate();
 
-  const onClick = (event) => {
+  const onClick = () => {
     navigate('/list');
-    event.preventDefault();
   };
 
   return (
