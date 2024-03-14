@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import styles from './page.module.css';
-import LaureateList from '../components/laureate-list';
-import Dropdown from '../components/dropdown';
-import { loadLaureates, loadCountries } from '../services/api';
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import styles from "./page.module.css";
+import LaureateList from "../components/laureate-list";
+import Dropdown from "../components/dropdown";
+import { loadLaureates, loadCountries } from "../services/api";
 
-const ALL = 'all';
+const ALL = "all";
 
 export const CountryPage = () => {
   const [laureates, setLaureates] = useState([]);
   const [yearOptions, setYearOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [countryTitle, setCountryTitle] = useState('');
+  const [countryTitle, setCountryTitle] = useState("");
 
   const { country } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const loadFilters = filteredLaureates => {
+  const loadFilters = (filteredLaureates) => {
     const years = new Set();
     const categories = new Set();
     filteredLaureates.forEach(({ prizes }) => {
@@ -29,52 +29,48 @@ export const CountryPage = () => {
     setCategoryOptions([ALL, ...Array.from(categories)]);
   };
 
-  const loadCountryInfo = useCallback(
-    () => {
-      loadCountries().then(countries => {
-        const currentCountry = countries.find(({ code }) => code === country);
-        setCountryTitle(currentCountry && currentCountry.name ? currentCountry.name : country);
-      });
-    },
-    [country]
-  );
+  const loadCountryInfo = useCallback(() => {
+    loadCountries().then((countries) => {
+      const currentCountry = countries.find(({ code }) => code === country);
+      setCountryTitle(
+        currentCountry && currentCountry.name ? currentCountry.name : country
+      );
+    });
+  }, [country]);
 
-  const loadAllCountryLaureates = useCallback(
-    () => {
-      loadLaureates().then(laureates => {
-        const countryLaureates = laureates.filter(
-          ({ bornCountryCode }) => bornCountryCode === country
-        );
-        setLaureates(countryLaureates);
-        loadFilters(countryLaureates);
-      });
-    },
-    [country]
-  );
+  const loadAllCountryLaureates = useCallback(() => {
+    loadLaureates().then((laureates) => {
+      const countryLaureates = laureates.filter(
+        ({ bornCountryCode }) => bornCountryCode === country
+      );
+      setLaureates(countryLaureates);
+      loadFilters(countryLaureates);
+    });
+  }, [country]);
 
-  useEffect(
-    () => {
-      loadCountryInfo();
-      loadAllCountryLaureates();
-    },
-    [country, loadCountryInfo, loadAllCountryLaureates]
-  );
+  useEffect(() => {
+    loadCountryInfo();
+    loadAllCountryLaureates();
+  }, [country, loadCountryInfo, loadAllCountryLaureates]);
 
   const filterLaureates = useCallback(
     (selectedYear, selectedCategory) => {
-      loadLaureates().then(laureates => {
+      loadLaureates().then((laureates) => {
         const countryLaureates = laureates.filter(
           ({ bornCountryCode }) => bornCountryCode === country
         );
-        const isItemFits = prizes => {
-          const isYearFits = year => (selectedYear && selectedYear !== ALL ? year === selectedYear : true);
-          const isCategoryFits = category =>
-            selectedCategory && selectedCategory !== ALL ? category === selectedCategory : true;
+        const isItemFits = (prizes) => {
+          const isYearFits = (year) =>
+            selectedYear && selectedYear !== ALL ? year === selectedYear : true;
+          const isCategoryFits = (category) =>
+            selectedCategory && selectedCategory !== ALL
+              ? category === selectedCategory
+              : true;
           return prizes;
         };
 
         const filteredLaureates = [];
-        countryLaureates.forEach(laureate => {
+        countryLaureates.forEach((laureate) => {
           if (isItemFits(laureate.prizes)) {
             filteredLaureates.push(laureate);
           }
@@ -86,22 +82,22 @@ export const CountryPage = () => {
     [country]
   );
 
-  useEffect(
-    () => {
-      filterLaureates(searchParams.get('year'), searchParams.get('category'));
-    },
-    [searchParams, filterLaureates]
-  );
+  useEffect(() => {
+    filterLaureates(searchParams.get("year"), searchParams.get("category"));
+  }, [searchParams, filterLaureates]);
 
   const changeParam = (type, value) => {
-    const search = {}
+
+
+    const search = {};
 
     for (let entry of searchParams.entries()) {
+      console.log('entry,', entry)
       search[entry[0]] = entry[1];
     }
-
-    setSearchParams();
-  }
+    console.log('search,', search)
+    setSearchParams({...search, [type]: value});
+  };
 
   return (
     <div className={styles.vertical_padding}>
@@ -113,16 +109,18 @@ export const CountryPage = () => {
           <Dropdown
             label="Year"
             options={yearOptions}
-            handleOnSelect={value => changeParam('year', `${value || ALL}`)}
-            selected={searchParams.get('year') || ALL}
+            handleOnSelect={(value) => changeParam("year", `${value || ALL}`)}
+            selected={searchParams.get("year") || ALL}
           />
         </div>
         <div className={styles.filter_item}>
           <Dropdown
             label="Category"
             options={categoryOptions}
-            handleOnSelect={value => changeParam('category', `${value || ALL}`)}
-            selected={searchParams.get('category') || ALL}
+            handleOnSelect={(value) =>
+              changeParam("category", `${value || ALL}`)
+            }
+            selected={searchParams.get("category") || ALL}
           />
         </div>
       </div>
