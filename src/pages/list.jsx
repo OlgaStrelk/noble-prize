@@ -49,11 +49,12 @@ export const ListPage = () => {
   const search = searchParams.get('search');
   const { state, pathname } = useLocation();
   const navigate = useNavigate();
+  const url = window.location.href;
 
   useEffect(
     () => {
       if (state) {
-        navigate('', { state: [...state, { path: pathname, url: window.location, title: 'List of Nobel laureates' }] });
+        navigate('', { state: [...state, { path: pathname, url, title: 'List of Nobel laureates' }] });
       }
     },
     /* eslint-disable-next-line */
@@ -156,6 +157,7 @@ export const ListPage = () => {
   return (
     <div className={styles.vertical_padding}>
       <header className={styles.horizontal_padding}>
+        <Breadcrumbs />
         <h1>List of Nobel laureates</h1>
       </header>
       <div className={styles.filters}>

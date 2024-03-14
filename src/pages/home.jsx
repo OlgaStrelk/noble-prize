@@ -10,7 +10,7 @@ export function HomePage() {
 
   const onClick = () => {
     const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }];
-    navigate('/list');
+    navigate('/list', { state: initialBreadcrumb });
   };
 
   return (
