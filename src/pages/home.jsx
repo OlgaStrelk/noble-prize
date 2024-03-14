@@ -9,6 +9,7 @@ export function HomePage() {
   const navigate = useNavigate();
 
   const onClick = () => {
+    const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }];
     navigate('/list');
   };
 

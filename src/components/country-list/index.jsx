@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import styles from './country.module.css';
 import arrow from '../../images/arrow.svg';
 
 export const CountryList = ({ countries }) => {
+  const { state } = useLocation();
   return (
     <ul>
       {countries.map(({ name, code, count }, index) => (
         <li key={index}>
           <Link
-            to={{ pathname: `/list/${code}` }}
+            to={`/list/${code}`}
+            state={state}
             className={styles.link}
           >
             <div className={styles.country}>

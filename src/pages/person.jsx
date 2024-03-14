@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import styles from './page.module.css';
 import personStyles from './person-page.module.css';
 import PersonInfo from '../components/person-info';
+import { Breadcrumbs } from '../components/breadcrumbs';
+import { isContainRoute } from '../services/breadcrumbs';
 
 import { loadLaureates } from '../services/api';
 

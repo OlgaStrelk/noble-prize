@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import {useLocation, useNavigate, useSearchParams} from 'react-router-dom';
 
 import styles from './page.module.css';
 
+import { Breadcrumbs } from '../components/breadcrumbs';
 import { CountryList } from '../components/country-list';
 import { SortingControl } from '../components/sorting-control';
+import { isContainRoute } from '../services/breadcrumbs';
 import { deserializeQuery, loadCountries, loadLaureates, serializeQuery } from '../services/api';
 
 export const ASC = 'asc';
@@ -44,6 +46,19 @@ export const ListPage = () => {
   const [personCountSorting, setPersonCountSorting] = useState('');
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search');
+  const { state, pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(
+    () => {
+      if (state) {
+        navigate('', { state: [...state, { path: pathname, url: window.location, title: 'List of Nobel laureates' }] });
+      }
+    },
+    /* eslint-disable-next-line */
+    []
+  );
 
   const loadCountryInfo = async () => {
     setLoading(true);
@@ -67,15 +82,20 @@ export const ListPage = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get('country')) {
-      setCountrySorting(searchParams.get('country'));
-      setPersonCountSorting('');
-    } else if (searchParams.get('count')) {
-      setPersonCountSorting(searchParams.get('count'));
-      setCountrySorting('');
+    if (search) {
+      const queryObj = deserializeQuery(search);
+      Object.keys(deserializeQuery(search)).forEach(key => {
+        if (key === 'country') {
+          setCountrySorting(queryObj[key]);
+          setPersonCountSorting('');
+        } else {
+          setPersonCountSorting(queryObj[key]);
+          setCountrySorting('');
+        }
+      });
     }
     // eslint-disable-next-line
-  }, [searchParams]);
+  }, []);
 
   useEffect(
     () => {
@@ -90,20 +110,37 @@ export const ListPage = () => {
     <CountryList countries={data} />
   ) : null;
 
+  const getNextQuery = useCallback(
+    (type, current) => {
+      if (!search) {
+        return `?${type}=${current}`;
+      } else {
+        return serializeQuery({ [type]: current });
+      }
+    },
+    [search]
+  );
+
   const sortCountries = useCallback(
     type => {
-      let nextSortingValue;
+      let query;
       switch (type) {
         case 'country': {
-          nextSortingValue = countrySorting ? (countrySorting === ASC ? DESC : ASC) : ASC;
+          const nextSortingValue = countrySorting ? (countrySorting === ASC ? DESC : ASC) : ASC;
+          setCountrySorting(nextSortingValue);
+          setPersonCountSorting('');
+          query = getNextQuery(type, nextSortingValue);
           break;
         }
         case 'count': {
-          nextSortingValue = personCountSorting
+          const nextSortingValue = personCountSorting
             ? personCountSorting === ASC
               ? DESC
               : ASC
             : ASC;
+          setPersonCountSorting(nextSortingValue);
+          setCountrySorting('');
+          query = getNextQuery(type, nextSortingValue);
           break;
         }
         default: {
@@ -111,9 +148,9 @@ export const ListPage = () => {
         }
       }
 
-      setSearchParams({[type]: nextSortingValue});
+      setSearchParams({search:  query});
     },
-    [personCountSorting, countrySorting]
+    [personCountSorting, countrySorting, getNextQuery]
   );
 
   return (
