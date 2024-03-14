@@ -66,7 +66,9 @@ export const CountryPage = () => {
             selectedCategory && selectedCategory !== ALL
               ? category === selectedCategory
               : true;
-          return prizes;
+          return prizes.some(
+            ({ year, category }) => isYearFits(year) && isCategoryFits(category)
+          );
         };
 
         const filteredLaureates = [];
@@ -87,16 +89,12 @@ export const CountryPage = () => {
   }, [searchParams, filterLaureates]);
 
   const changeParam = (type, value) => {
-
-
     const search = {};
 
     for (let entry of searchParams.entries()) {
-      console.log('entry,', entry)
       search[entry[0]] = entry[1];
     }
-    console.log('search,', search)
-    setSearchParams({...search, [type]: value});
+    setSearchParams({ ...search, [type]: value });
   };
 
   return (
