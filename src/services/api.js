@@ -19,3 +19,18 @@ export const loadLaureates = () =>
 // TODO: replace with server request
 export const loadCountries = () =>
   fetch('https://code.s3.yandex.net/react/code/country.json').then(response => response.json()).then(({ countries }) => countries);
+
+export const loginRequest = async form => {
+  return await fetch('https://cosmic.nomoreparties.space/login', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  });
+};
