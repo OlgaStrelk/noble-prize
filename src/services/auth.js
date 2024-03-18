@@ -29,7 +29,18 @@ export function useProvideAuth() {
 
   const signIn = async (form) => {
     const data = await loginRequest(form)
-      .then((res) => res.json())
+      .then((res) => {
+        let authToken;
+        res.headers.forEach((header) => {
+          if (header.indexOf("Bearer") === 0) {
+            authToken = header.split("Bearer ")[1];
+          }
+        });
+        if (authToken) {
+          setCookie("token", authToken);
+        }
+        res.json();
+      })
       .then((data) => data);
 
     if (data.success) {
