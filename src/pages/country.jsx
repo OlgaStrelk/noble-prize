@@ -4,7 +4,12 @@ import styles from './page.module.css';
 import LaureateList from '../components/laureate-list';
 import Dropdown from '../components/dropdown';
 import { Breadcrumbs } from '../components/breadcrumbs';
-import { loadLaureates, loadCountries, deserializeQuery, serializeQuery } from '../services/api';
+import {
+  getCountriesRequest,
+  deserializeQuery,
+  serializeQuery,
+  getLaureatesRequest
+} from '../services/api';
 import { isContainRoute } from '../services/breadcrumbs';
 
 const ALL = 'all';
@@ -48,7 +53,7 @@ export const CountryPage = () => {
 
   const loadCountryInfo = useCallback(
     () => {
-      loadCountries().then(countries => {
+      getCountriesRequest().then(countries => {
         const currentCountry = countries.find(({ code }) => code === country);
         setCountryTitle(currentCountry && currentCountry.name ? currentCountry.name : country);
       });
@@ -58,7 +63,7 @@ export const CountryPage = () => {
 
   const loadAllCountryLaureates = useCallback(
     () => {
-      loadLaureates().then(laureates => {
+      getLaureatesRequest().then(laureates => {
         const countryLaureates = laureates.filter(
           ({ bornCountryCode }) => bornCountryCode === country
         );
@@ -79,7 +84,7 @@ export const CountryPage = () => {
 
   const filterLaureates = useCallback(
     (selectedYear, selectedCategory) => {
-      loadLaureates().then(laureates => {
+      getLaureatesRequest().then(laureates => {
         const countryLaureates = laureates.filter(
           ({ bornCountryCode }) => bornCountryCode === country
         );

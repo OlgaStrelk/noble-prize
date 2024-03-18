@@ -3,11 +3,16 @@ import {useLocation, useNavigate, useSearchParams} from 'react-router-dom';
 
 import styles from './page.module.css';
 
-import { Breadcrumbs } from '../components/breadcrumbs';
 import { CountryList } from '../components/country-list';
 import { SortingControl } from '../components/sorting-control';
 import { isContainRoute } from '../services/breadcrumbs';
-import { deserializeQuery, loadCountries, loadLaureates, serializeQuery } from '../services/api';
+import { Breadcrumbs } from '../components/breadcrumbs';
+import {
+  deserializeQuery,
+  getCountriesRequest,
+  getLaureatesRequest,
+  serializeQuery
+} from '../services/api';
 
 export const ASC = 'asc';
 export const DESC = 'desc';
@@ -64,8 +69,8 @@ export const ListPage = () => {
   const loadCountryInfo = async () => {
     setLoading(true);
     try {
-      const countries = await loadCountries();
-      const laureates = await loadLaureates();
+      const countries = await getCountriesRequest();
+      const laureates = await getLaureatesRequest();
 
       const hashLaureates = laureates.reduce(aggregateData, {});
 

@@ -1,35 +1,36 @@
-import React, { useCallback, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useCallback, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
-import styles from "./home.module.css";
+import styles from './home.module.css';
 
-import { useAuth } from "../services/auth";
-import { Button } from "../components/button";
-import { Input } from "../components/input";
-import { PasswordInput } from "../components/password-input";
+import { useAuth } from '../services/auth';
+import { Button } from '../components/button';
+import { Input } from '../components/input';
+import { PasswordInput } from '../components/password-input';
 
 export function LoginPage() {
-  let navigate = useNavigate();
   let auth = useAuth();
 
-  const [form, setValue] = useState({ email: "", password: "" });
+  const [form, setValue] = useState({ email: '', password: '' });
 
-  const onChange = (e) => {
+  const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
   let login = useCallback(
-    (e) => {
+    e => {
       e.preventDefault();
       auth.signIn(form);
-      navigate("/", { replace: true });
     },
-
     [auth, form]
   );
 
   if (auth.user) {
-    return <Navigate to={"/"} />;
+    return (
+      <Navigate
+        to={'/'}
+      />
+    );
   }
 
   return (
@@ -38,12 +39,7 @@ export function LoginPage() {
         <form className={styles.form}>
           <h1 className={styles.heading}>Nobel Prize Library</h1>
 
-          <Input
-            placeholder="Email"
-            value={form.email}
-            name="email"
-            onChange={onChange}
-          />
+          <Input placeholder="Email" value={form.email} name="email" onChange={onChange} />
           <PasswordInput
             placeholder="Password"
             value={form.password}

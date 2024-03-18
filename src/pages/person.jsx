@@ -6,7 +6,7 @@ import PersonInfo from '../components/person-info';
 import { Breadcrumbs } from '../components/breadcrumbs';
 import { isContainRoute } from '../services/breadcrumbs';
 
-import { loadLaureates } from '../services/api';
+import { getLaureatesRequest } from '../services/api';
 
 export const PersonPage = () => {
   const [person, setPerson] = useState(null);
@@ -17,7 +17,7 @@ export const PersonPage = () => {
 
   const loadLaureateInfo = useCallback(
     () => {
-      loadLaureates().then(laureates => {
+      getLaureatesRequest().then(laureates => {
         setPerson(laureates.find(({ id }) => id === personId));
       });
     },

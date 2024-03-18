@@ -1,17 +1,16 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import styles from "./home.module.css";
+import styles from './home.module.css';
 
-import { Button } from "../components/button";
+import { Button } from '../components/button';
 
 export function HomePage() {
   const navigate = useNavigate();
 
-  const onClick = (event) => {
-    const initialBreadcrumb = [{ path: "/", url: "/", title: "Home" }];
-    navigate("/list", { state: initialBreadcrumb });
-    event.preventDefault();
+  const onClick = () => {
+    const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }];
+    navigate('/list', { state: initialBreadcrumb });
   };
 
   return (
