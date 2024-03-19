@@ -1,6 +1,6 @@
-import { useContext, useState, createContext } from "react";
-import { getUserRequest, loginRequest } from "./api";
-import { setCookie } from "./utils";
+import { useContext, useState, createContext } from 'react';
+import { getUserRequest, loginRequest } from './api';
+import { setCookie } from './utils';
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -11,7 +11,7 @@ const fakeAuth = {
   signOut(cb) {
     fakeAuth.isAuthenticated = false;
     setTimeout(cb, 100);
-  },
+  }
 };
 
 const AuthContext = createContext(undefined);
@@ -30,37 +30,37 @@ export function useProvideAuth() {
 
   const getUser = async () => {
     return await getUserRequest()
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         if (data.success) {
-          setUser(data);
+          setUser(data)
         }
         return data.success;
       });
   };
 
-  const signIn = async (form) => {
+  const signIn = async form => {
     const data = await loginRequest(form)
-      .then((res) => {
+      .then(res => {
         let authToken;
-        res.headers.forEach((header) => {
-          if (header.indexOf("Bearer") === 0) {
-            authToken = header.split("Bearer ")[1];
+        res.headers.forEach(header => {
+          if (header.indexOf('Bearer') === 0) {
+            authToken = header.split('Bearer ')[1];
           }
         });
         if (authToken) {
-          setCookie("token", authToken);
+          setCookie('token', authToken);
         }
         return res.json();
       })
-      .then((data) => data);
+      .then(data => data);
 
     if (data.success) {
       setUser({ ...data.user, id: data.user._id });
     }
   };
 
-  const signOut = (cb) => {
+  const signOut = cb => {
     return fakeAuth.signOut(() => {
       setUser(null);
       cb();
@@ -71,6 +71,6 @@ export function useProvideAuth() {
     user,
     getUser,
     signIn,
-    signOut,
+    signOut
   };
 }

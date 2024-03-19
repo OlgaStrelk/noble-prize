@@ -1,4 +1,5 @@
 import { getCookie } from "./utils";
+
 const BASE_URL = "https://cosmic.nomoreparties.space/";
 
 export const deserializeQuery = (query, noQuestionMark = false) => {
