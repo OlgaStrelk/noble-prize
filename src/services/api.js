@@ -1,4 +1,5 @@
 import { getCookie } from "./utils";
+const BASE_URL = "https://cosmic.nomoreparties.space/";
 
 export const deserializeQuery = (query, noQuestionMark = false) => {
   const pairs = (noQuestionMark ? query : query.substring(1)).split("&");
@@ -18,7 +19,7 @@ export const serializeQuery = (queryParams) =>
   }, "?");
 
 export const getCountriesRequest = async () =>
-  await fetch("https://cosmic.nomoreparties.space/api/countries", {
+  await fetch(`${BASE_URL}api/countries`, {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
@@ -34,7 +35,7 @@ export const getCountriesRequest = async () =>
     .then(({ countries }) => countries);
 
 export const getLaureatesRequest = async () =>
-  await fetch("https://cosmic.nomoreparties.space/api/laureates", {
+  await fetch(`${BASE_URL}api/laureates`, {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
@@ -50,7 +51,7 @@ export const getLaureatesRequest = async () =>
     .then(({ laureates }) => laureates);
 
 export const getUserRequest = async () =>
-  await fetch("https://cosmic.nomoreparties.space/api/user", {
+  await fetch(`${BASE_URL}api/user`, {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
@@ -64,7 +65,7 @@ export const getUserRequest = async () =>
   });
 
 export const loginRequest = async (form) => {
-  return await fetch("https://cosmic.nomoreparties.space/login", {
+  return await fetch(`${BASE_URL}login`, {
     method: "POST",
     mode: "cors",
     cache: "no-cache",
