@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { TCountry } from "../types/data";
 import { getCountriesRequest } from "../api";
+import { AppDispatch, AppThunkAction } from "../types";
 
 export interface IGetCountriesAction {
   readonly type: typeof COUNTRIES_REQUEST;
@@ -39,7 +40,7 @@ export const getCountriesSuccessAction = (
   countries,
 });
 
-export const getCountriesThunk = (): any => (dispatch: any) => {
+export const getCountriesThunk = (): AppThunkAction => (dispatch: AppDispatch) => {
   dispatch(getCountriesAction());
   getCountriesRequest().then((res) => {
     if (res && res.success) {

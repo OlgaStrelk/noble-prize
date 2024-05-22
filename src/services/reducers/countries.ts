@@ -18,7 +18,7 @@ const countriesInitialState: TCountriesState = {
   countriesRequestFailed: false
 };
 
-export const countriesReducer = (state = countriesInitialState, action: any): TCountriesState => {
+export const countriesReducer = (state = countriesInitialState, action: TCountriesActions): TCountriesState => {
   switch (action.type) {
     case COUNTRIES_REQUEST: {
       return { ...state, countriesRequest: true, countriesRequestFailed: false };

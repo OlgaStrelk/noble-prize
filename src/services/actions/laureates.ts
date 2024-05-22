@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { TLaureate } from "../types/data";
 import { getLaureatesRequest } from "../api";
+import { AppThunkAction } from "../types";
 
 export interface IGetLaureatesAction {
   readonly type: typeof LAUREATES_REQUEST;
@@ -39,7 +40,7 @@ export const getLaureatesSuccessAction = (
   laureates,
 });
 
-export const getLaureatesThunk = (): any => (dispatch: any) => {
+export const getLaureatesThunk = (): AppThunkAction => (dispatch: any) => {
   dispatch(getLaureatesAction());
   getLaureatesRequest().then((res) => {
     if (res && res.success) {

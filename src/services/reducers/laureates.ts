@@ -18,7 +18,7 @@ const laureatesInitialState: TLaureatesState = {
   laureatesRequestFailed: false
 };
 
-export const laureatesReducer = (state = laureatesInitialState, action: any): TLaureatesState => {
+export const laureatesReducer = (state = laureatesInitialState, action: TLaureatesActions): TLaureatesState => {
   switch (action.type) {
     case LAUREATES_REQUEST: {
       return { ...state, laureatesRequest: true, laureatesRequestFailed: false };

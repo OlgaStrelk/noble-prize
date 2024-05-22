@@ -32,7 +32,7 @@ const userInitialState: TUserState = {
   user: undefined
 };
 
-export const userReducer = (state = userInitialState, action: any): TUserState => {
+export const userReducer = (state = userInitialState, action: TUserActions): TUserState => {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return { ...state, loginRequest: true, loginRequestFailed: false };
